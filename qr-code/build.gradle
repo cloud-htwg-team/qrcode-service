@@ -24,6 +24,9 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// https://mvnrepository.com/artifact/io.nayuki/qrcodegen
+	implementation 'io.nayuki:qrcodegen:1.8.0'
 }
 
 tasks.named('test') {
