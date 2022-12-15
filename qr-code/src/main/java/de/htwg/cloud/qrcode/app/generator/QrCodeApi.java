@@ -4,10 +4,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -18,9 +15,10 @@ import java.nio.charset.StandardCharsets;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping("/qr-code")
+@RequestMapping(QrCodeApi.QR_CODE_GENERATOR_REST_PATH)
 public class QrCodeApi {
 
+    public static final String QR_CODE_GENERATOR_REST_PATH = "/qr-code";
     private final QrCodeService service;
 
     public QrCodeApi(QrCodeService service) {
