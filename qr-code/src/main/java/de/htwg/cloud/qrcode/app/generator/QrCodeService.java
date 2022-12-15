@@ -7,18 +7,22 @@ import org.springframework.stereotype.Component;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 @Slf4j
 @Component
 public class QrCodeService {
 
-    public void generate(String textToEncode) throws IOException {
+    public ByteArrayOutputStream generate(String textToEncode) throws IOException {
         QrCode qrCode = QrCode.encodeText(textToEncode, QrCode.Ecc.HIGH);
 
         BufferedImage img = QrCodeLibraryUtil.toImage(qrCode, 10, 15);
-        ImageIO.write(img, "png", new File("qr-code.png"));
+
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        ImageIO.write(img, "png", os);
+
+        return os;
     }
 
 }
