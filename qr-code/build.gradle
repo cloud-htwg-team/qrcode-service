@@ -27,7 +27,3 @@ dependencies {
 	// https://mvnrepository.com/artifact/io.nayuki/qrcodegen
 	implementation 'io.nayuki:qrcodegen:1.8.0'
 }
-
-tasks.named('test') {
-	useJUnitPlatform()
-}
