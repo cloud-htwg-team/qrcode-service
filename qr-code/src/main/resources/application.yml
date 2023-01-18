@@ -1,1 +1,11 @@
+server:
+  port: 8080 # inside container port
 
+history:
+  service: # 127.0.0.1:8081/history
+    server: 127.0.0.1
+    port: 8081
+    path: /history
+# two docker containers with different outside ports (8080 from container mapped to 8081 machine)
+# docker run -d -p 8080:8080 qrcode
+# docker run -d -p 8081:8080 qrcode
