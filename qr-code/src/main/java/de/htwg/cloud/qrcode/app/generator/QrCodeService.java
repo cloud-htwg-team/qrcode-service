@@ -1,6 +1,5 @@
 package de.htwg.cloud.qrcode.app.generator;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.htwg.cloud.qrcode.app.lib.QrCodeLibraryUtil;
 import io.nayuki.qrcodegen.QrCode;
@@ -35,14 +34,11 @@ public class QrCodeService {
 
     private final String historyServiceServer;
     private final String historyServicePort;
-    private final String historyServicePath;
 
     public QrCodeService(@Value("${history.service.server}") String historyServiceServer,
-                         @Value("${history.service.port}") String historyServicePort,
-                         @Value("${history.service.path}") String historyServicePath) {
+                         @Value("${history.service.port}") String historyServicePort) {
         this.historyServiceServer = historyServiceServer;
         this.historyServicePort = historyServicePort;
-        this.historyServicePath = historyServicePath;
     }
 
 
@@ -57,18 +53,21 @@ public class QrCodeService {
         return os;
     }
 
-    public CompletableFuture<HttpResponse<String>> sendToHistoryServiceAsync(byte[] qrCodeBytes) throws URISyntaxException, JsonProcessingException {
-        URI historyServiceURI = new URI("http://%s:%s%s".formatted(
+    public CompletableFuture<HttpResponse<String>> sendToHistoryServiceAsync(byte[] qrCodeBytes, String tenantId, String userId) throws URISyntaxException, IOException, InterruptedException {
+        //  /history/tenants/{tenantId}/users/{userId}/entries
+        URI historyServiceURI = new URI("http://%s:%s/history/tenants/%s/users/%s/entries".formatted(
                 historyServiceServer,
                 historyServicePort,
-                historyServicePath
+                tenantId,
+                userId
         ));
+
+//        log.info(historyServiceURI.toString());
 
         String base64QrCode = Base64.getEncoder().encodeToString(qrCodeBytes);
 
-        DemoHistoryApi.HistoryDataDto historyDto = new DemoHistoryApi.HistoryDataDto(
-                "some-user-ID",
-                Instant.now(),
+        HistoryDataDto historyDto = new HistoryDataDto(
+                Instant.now().getEpochSecond(),
                 base64QrCode
         );
 
@@ -82,6 +81,12 @@ public class QrCodeService {
                 .build();
 
         return HTTP_CLIENT.sendAsync(historyServicePOSTRequest, HttpResponse.BodyHandlers.ofString());
+    }
+
+    private record HistoryDataDto(
+            long createdAt, // epoch seconds
+            String qrCode // base64
+    ) {
     }
 
 }

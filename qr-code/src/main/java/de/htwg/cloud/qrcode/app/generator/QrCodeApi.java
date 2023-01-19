@@ -16,9 +16,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
-import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-import java.util.concurrent.CompletableFuture;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -36,7 +34,7 @@ public class QrCodeApi {
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity<InputStreamResource> generate(@RequestBody QrCodeApiDto dto) throws IOException, URISyntaxException {
+    public ResponseEntity<InputStreamResource> generate(@RequestBody QrCodeApiDto dto) throws IOException, URISyntaxException, InterruptedException {
         String textToEncode = dto.text;
         if (textToEncode == null || textToEncode.isBlank()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -48,9 +46,8 @@ public class QrCodeApi {
         byte[] qrCodeBytes = os.toByteArray();
 
         // Send Data to History Microservice
-        CompletableFuture<HttpResponse<String>> response = service.sendToHistoryServiceAsync(qrCodeBytes);
-        response.whenComplete((stringHttpResponse, throwable) -> log.info("Response received: {}", stringHttpResponse));
-
+        var response = service.sendToHistoryServiceAsync(qrCodeBytes, "tenant-id", "user-id-hehe");
+        response.whenComplete((stringHttpResponse, throwable) -> log.info("Response received: {}", stringHttpResponse.body()));
 
         String name = "qr-code.png";
         String fileName = "filename=\"" + name + "\"";
