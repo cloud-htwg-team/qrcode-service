@@ -8,8 +8,8 @@ jobs:
     name: Build and Push to GCP
     runs-on: ubuntu-latest
     env:
-      IMAGE_NAME: qrcode-service
-      PROJECT_ID: qrcode-374515 
+      IMAGE_NAME: qrcode-micro-service
+      PROJECT_ID: qrcode-374515
 
     # Add "id-token" with the intended permissions.
     permissions:
