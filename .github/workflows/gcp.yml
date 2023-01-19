@@ -29,8 +29,8 @@ jobs:
       run: docker build -t $IMAGE_NAME:latest ./qr-code
 
     - name: Automatic Tagging of Releases
-      id: incement-git-tag
-      run: |-
+      id: increment-git-tag
+      run: |
         bash ./scripts/git-update.sh -v major
     
     - name: Configure Docker Client
