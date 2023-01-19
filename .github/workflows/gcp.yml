@@ -10,6 +10,12 @@ jobs:
     env:
       IMAGE_NAME: qr-code-image
       PROJECT_ID: qrcode-374515 
+
+    # Add "id-token" with the intended permissions.
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
     steps:
     - uses: 'actions/checkout@v3'
     - id: 'auth'
