@@ -13,7 +13,7 @@ public class QrcodeApplication {
 
 	@GetMapping("/")
 	public String hello() {
-		return "Microservice QR Generator is running. Use 'POST %s' with JSON payload with '\"text\"' attribute.".formatted(QR_CODE_GENERATOR_REST_PATH);
+		return "QR microservice works!";
 	}
 
 	public static void main(String[] args) {
