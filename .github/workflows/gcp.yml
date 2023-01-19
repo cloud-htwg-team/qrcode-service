@@ -8,7 +8,7 @@ jobs:
     name: Build and Push to GCP
     runs-on: ubuntu-latest
     env:
-      IMAGE_NAME: qrcode-micro-service
+      IMAGE_NAME: qrcode-service
       PROJECT_ID: qrcode-374515
 
     # Add "id-token" with the intended permissions.
@@ -41,7 +41,7 @@ jobs:
       env:
         GIT_TAG: ${{ steps.increment-git-tag.outputs.git-tag }}
       run: |-
-        docker tag $IMAGE_NAME:latest gcr.io/$PROJECT_ID/$IMAGE_NAME:latest
-        docker tag $IMAGE_NAME:latest gcr.io/$PROJECT_ID/$IMAGE_NAME:$GIT_TAG
-        docker push gcr.io/$PROJECT_ID/$IMAGE_NAME:latest
-        docker push gcr.io/$PROJECT_ID/$IMAGE_NAME:$GIT_TAG
+        docker tag $IMAGE_NAME:latest eu.gcr.io/$PROJECT_ID/$IMAGE_NAME:latest
+        docker tag $IMAGE_NAME:latest eu.gcr.io/$PROJECT_ID/$IMAGE_NAME:$GIT_TAG
+        docker push eu.gcr.io/$PROJECT_ID/$IMAGE_NAME:latest
+        docker push eu.gcr.io/$PROJECT_ID/$IMAGE_NAME:$GIT_TAG
