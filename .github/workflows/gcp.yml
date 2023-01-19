@@ -21,7 +21,7 @@ jobs:
         export_default_credentials: true
 
     - name: Build Docker Image
-      run: docker build -t $IMAGE_NAME:latest -f ./qr-code/Dockerfile
+      run: docker build -t $IMAGE_NAME:latest ./qr-code/Dockerfile
     
     - name: Configure Docker Client
       run: |-
