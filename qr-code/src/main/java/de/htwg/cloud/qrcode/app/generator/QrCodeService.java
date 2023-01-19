@@ -16,9 +16,9 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Base64;
-import java.util.concurrent.CompletableFuture;
 
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -53,7 +53,7 @@ public class QrCodeService {
         return os;
     }
 
-    public CompletableFuture<HttpResponse<String>> sendToHistoryServiceAsync(byte[] qrCodeBytes, String tenantId, String userId) throws URISyntaxException, IOException, InterruptedException {
+    public void sendToHistoryServiceAsync(byte[] qrCodeBytes, String tenantId, String userId) throws URISyntaxException, IOException, InterruptedException {
         //  /history/tenants/{tenantId}/users/{userId}/entries
         URI historyServiceURI = new URI("http://%s:%s/history/tenants/%s/users/%s/entries".formatted(
                 historyServiceServer,
@@ -62,7 +62,7 @@ public class QrCodeService {
                 userId
         ));
 
-//        log.info(historyServiceURI.toString());
+        log.info(historyServiceURI.toString());
 
         String base64QrCode = Base64.getEncoder().encodeToString(qrCodeBytes);
 
@@ -77,10 +77,13 @@ public class QrCodeService {
         HttpRequest historyServicePOSTRequest = HttpRequest.newBuilder()
                 .uri(historyServiceURI)
                 .header(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+                .timeout(Duration.ofSeconds(30))
                 .POST(HttpRequest.BodyPublishers.ofString(json))
                 .build();
 
-        return HTTP_CLIENT.sendAsync(historyServicePOSTRequest, HttpResponse.BodyHandlers.ofString());
+
+        HTTP_CLIENT.sendAsync(historyServicePOSTRequest, HttpResponse.BodyHandlers.ofString())
+                .whenComplete((stringHttpResponse, throwable) -> log.info("Response received: {}", stringHttpResponse.body()));
     }
 
     private record HistoryDataDto(

@@ -1,7 +1,7 @@
 server:
   port: 8080 # inside container port
 
-history:
+history: # http://35.246.134.137:8888/test
   service:
     server: 127.0.0.1
     port: 8081
