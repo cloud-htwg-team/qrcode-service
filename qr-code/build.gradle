@@ -8,6 +8,10 @@ group = 'de.htwg.cloud'
 version = '0.0.1'
 sourceCompatibility = '17'
 
+bootJar {
+	archiveFileName = "qr-code-microservice.jar"
+}
+
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
