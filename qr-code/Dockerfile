@@ -16,6 +16,9 @@ COPY --from=builder /build/build/libs/*.jar /app/qr-code-microservice.jar
 
 ENTRYPOINT ["java", "-jar","/app/qr-code-microservice.jar"]
 
+# override server.port of the app (inside of the container)
+#ENTRYPOINT ["java", "-jar","/app/qr-code-microservice.jar", "--server.port=8089"]
+
 
 
 
