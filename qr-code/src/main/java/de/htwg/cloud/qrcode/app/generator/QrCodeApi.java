@@ -49,7 +49,7 @@ public class QrCodeApi {
         byte[] qrCodeBytes = os.toByteArray();
 
         // Send Data to History Microservice
-        service.sendToHistoryServiceAsync(qrCodeBytes, "tenant-id", "user-id-hehe");
+        service.sendToHistoryServiceAsync(qrCodeBytes, dto.tenantId, dto.localId, dto.idToken);
 
         String name = "qr-code.png";
         String fileName = "filename=\"" + name + "\"";
@@ -64,6 +64,11 @@ public class QrCodeApi {
     }
 
 
-    private record QrCodeApiDto(String text) {
+    private record QrCodeApiDto(
+            String text,
+            String localId,
+            String tenantId,
+            String idToken
+    ) {
     }
 }
