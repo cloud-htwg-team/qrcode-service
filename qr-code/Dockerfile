@@ -9,7 +9,6 @@ RUN gradle build --no-daemon
 
 ### RUN Image ##
 FROM eclipse-temurin:17
-EXPOSE 8080
 WORKDIR /app
 
 COPY --from=builder /build/build/libs/qr-code-microservice.jar /app/qr-code-microservice.jar

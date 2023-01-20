@@ -34,6 +34,11 @@ public class QrCodeApi {
         this.service = service;
     }
 
+    @GetMapping
+	public String hello() {
+		return "QR microservice works! :)  - path: '" + QR_CODE_GENERATOR_REST_PATH + "'";
+	}
+
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<InputStreamResource> generate(@RequestBody QrCodeApiDto dto) throws IOException, URISyntaxException, InterruptedException, ExecutionException {
         String textToEncode = dto.text;

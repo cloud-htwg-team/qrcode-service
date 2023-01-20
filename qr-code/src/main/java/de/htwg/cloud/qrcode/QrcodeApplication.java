@@ -13,7 +13,7 @@ public class QrcodeApplication {
 
 	@GetMapping("/")
 	public String hello() {
-		return "QR microservice works! :)";
+		return "QR microservice works! :)  - path: '/'";
 	}
 
 	public static void main(String[] args) {
