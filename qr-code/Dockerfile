@@ -8,13 +8,19 @@ RUN gradle build --no-daemon
 #RUN ls -1 /build/build/libs
 
 ### RUN Image ##
-FROM eclipse-temurin:17
-WORKDIR /app
 
-COPY --from=builder /build/build/libs/qr-code-microservice.jar /app/qr-code-microservice.jar
+# use JRE as JDK can be a security vulnerability; alpine is a slim version, then resulting image is 300MB smaller
+FROM eclipse-temurin:17-jre-alpine
+# -- will create the directory, set's path context --> ./ == /opt/app
+WORKDIR /opt/app
+RUN addgroup --system javauser && adduser -S -s /usr/sbin/nologin -G javauser javauser
+RUN chown -R javauser:javauser .
+USER javauser
 
-ENTRYPOINT ["java", "-jar","/app/qr-code-microservice.jar"]
+# there is a command 'ADD' but 'COPY" is prefered
+COPY --from=builder /build/build/libs/qr-code-microservice.jar /opt/app/qr-code-microservice.jar
 
-# override server.port of the app (inside of the container)
-#ENTRYPOINT ["java", "-jar","/app/qr-code-microservice.jar", "--server.port=8089"]
+ENTRYPOINT ["java", "-jar", "./qr-code-microservice.jar"]
 
+
+# https://mydeveloperplanet.com/2022/11/30/docker-best-practices/
