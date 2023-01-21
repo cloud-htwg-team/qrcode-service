@@ -1,6 +1,8 @@
 # syntax = docker/dockerfile:experimental
 
-FROM gradle:7.5.1-jdk17 AS builder
+### Build Image ##
+
+FROM gradle:7.5.1-jdk17-alpine AS builder
 COPY --chown=gradle:gradle . /build
 WORKDIR /build
 RUN gradle build --no-daemon
@@ -14,13 +16,15 @@ FROM eclipse-temurin:17-jre-alpine
 # -- will create the directory, set's path context --> ./ == /opt/app
 WORKDIR /opt/app
 RUN addgroup --system javauser && adduser -S -s /usr/sbin/nologin -G javauser javauser
+# there is a command 'ADD' but 'COPY" is prefered
+COPY --from=builder /build/build/libs/qr-code-microservice.jar ./qr-code-microservice.jar
+
 RUN chown -R javauser:javauser .
 USER javauser
-
-# there is a command 'ADD' but 'COPY" is prefered
-COPY --from=builder /build/build/libs/qr-code-microservice.jar /opt/app/qr-code-microservice.jar
 
 ENTRYPOINT ["java", "-jar", "./qr-code-microservice.jar"]
 
 
+# Optimizing Docker Sprring Boot images
 # https://mydeveloperplanet.com/2022/11/30/docker-best-practices/
+# https://mydeveloperplanet.com/2022/12/14/spring-boot-docker-best-practices/
