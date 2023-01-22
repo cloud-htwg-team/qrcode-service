@@ -54,8 +54,9 @@ public class QrCodeService {
     }
 
     public void sendToHistoryServiceAsync(byte[] qrCodeBytes, String tenantId, String userId, String idToken) throws URISyntaxException, IOException, InterruptedException {
-        //  /history/tenants/{tenantId}/users/{userId}/entries
-        URI historyServiceURI = new URI("http://%s:%s/history/tenants/%s/users/%s/entries".formatted(
+        //  /secure/history/tenants/{tenantId}/users/{userId}/entries
+        //  /secure/history/tenants/{tenantId}/users/{userId}/entries
+        URI historyServiceURI = new URI("http://%s:%s/secure/history/tenants/%s/users/%s/entries".formatted(
                 historyServiceServer,
                 historyServicePort,
                 tenantId,
