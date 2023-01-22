@@ -9,7 +9,7 @@ version = '0.0.1'
 sourceCompatibility = '17'
 
 bootJar {
-	archiveFileName = "qr-code-microservice.jar"
+	archiveFileName = "qrcode-microservice.jar"
 }
 
 configurations {

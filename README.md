@@ -1,6 +1,3 @@
-# cloud-app-dev-project
-HTWG Cloud Application Development Project
-
 ## QR Code microservise 
 - `JAVA 17`
 - library
@@ -25,10 +22,3 @@ Content-Type: application/json
   "text": "htwg-konstanz.de"
 }
 ```
-
----
-
-### Potentional QR code libs:
-- JS https://github.com/oblakstudio/qr-code-styling
-- Python https://www.geeksforgeeks.org/how-to-generate-qr-codes-with-a-custom-logo-using-python/
-

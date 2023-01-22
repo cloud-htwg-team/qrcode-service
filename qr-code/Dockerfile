@@ -17,12 +17,12 @@ FROM eclipse-temurin:17-jre-alpine
 WORKDIR /opt/app
 RUN addgroup --system javauser && adduser -S -s /usr/sbin/nologin -G javauser javauser
 # there is a command 'ADD' but 'COPY" is prefered
-COPY --from=builder /build/build/libs/qr-code-microservice.jar ./qr-code-microservice.jar
+COPY --from=builder /build/build/libs/qrcode-microservice.jar ./qrcode-microservice.jar
 
 RUN chown -R javauser:javauser .
 USER javauser
 
-ENTRYPOINT ["java", "-jar", "./qr-code-microservice.jar"]
+ENTRYPOINT ["java", "-jar", "./qrcode-microservice.jar"]
 
 
 # Optimizing Docker Sprring Boot images
