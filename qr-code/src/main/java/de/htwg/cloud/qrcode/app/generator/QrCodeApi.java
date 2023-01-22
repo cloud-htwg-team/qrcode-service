@@ -23,7 +23,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping(QrCodeApi.QR_CODE_GENERATOR_REST_PATH)
 public class QrCodeApi {
 
-    public static final String QR_CODE_GENERATOR_REST_PATH = "/qr-code";
+    public static final String QR_CODE_GENERATOR_REST_PATH = "/secure/qr-code";
 
     private final QrCodeService service;
 
