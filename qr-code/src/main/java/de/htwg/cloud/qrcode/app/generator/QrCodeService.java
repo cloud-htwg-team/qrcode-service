@@ -156,7 +156,7 @@ public class QrCodeService {
 //            byte[] decodedLogo = Base64.getDecoder().decode(tenantLogoBase64);
 //            ByteArrayInputStream bis = new ByteArrayInputStream(decodedLogo);
 
-        ClassPathResource classPathResource = new ClassPathResource("logo-120.png");
+        ClassPathResource classPathResource = new ClassPathResource("demo/logo-120.png");
         var bis = classPathResource.getInputStream();
 
         BufferedImage overlay = ImageIO.read(bis);
