@@ -38,11 +38,19 @@ public class QrCodeService {
 
     private final String historyServiceServer;
     private final String historyServicePort;
+    private final String tenantServiceServer;
+    private final String tenantServicePort;
 
-    public QrCodeService(@Value("${history.service.server}") String historyServiceServer,
-                         @Value("${history.service.port}") String historyServicePort) {
+    public QrCodeService(
+            @Value("${history.service.server}") String historyServiceServer,
+            @Value("${history.service.port}") String historyServicePort,
+            @Value("${tenant.service.server}") String tenantServiceServer,
+            @Value("${tenant.service.port}") String tenantServicePort
+    ) {
         this.historyServiceServer = historyServiceServer;
         this.historyServicePort = historyServicePort;
+        this.tenantServiceServer = tenantServiceServer;
+        this.tenantServicePort = tenantServicePort;
     }
 
     public String generate(String textToEncode, String tenantId) throws IOException, URISyntaxException, InterruptedException {
@@ -83,8 +91,8 @@ public class QrCodeService {
     private String getTenantLogo(String tenantId) throws URISyntaxException, IOException, InterruptedException {
         //  /secure/tenants/{tenantId}/logo
         URI tenantServiceURI = new URI("http://%s:%s//secure/tenants/%s/logo".formatted(
-                historyServiceServer,
-                historyServicePort,
+                tenantServiceServer,
+                tenantServicePort,
                 tenantId
         ));
 

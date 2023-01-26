@@ -5,6 +5,12 @@ history: # http://35.246.134.137:8888/test
   service:
     server: 127.0.0.1
     port: 8081
+
+tenant: # http://35.246.134.137:8888/test
+  service:
+    server: 127.0.0.1
+    port: 8083
+
 # two docker containers with different outside ports (8080 from container mapped to 8081 machine)
 # docker run -d -p 8080:8080 qrcode
 # docker run -d -p 8081:8888 qrcode
