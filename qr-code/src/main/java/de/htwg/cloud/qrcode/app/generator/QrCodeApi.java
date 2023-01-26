@@ -20,10 +20,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Slf4j
 @RestController
-@RequestMapping(QrCodeApi.QR_CODE_GENERATOR_REST_PATH)
+@RequestMapping
 public class QrCodeApi {
-
-    public static final String QR_CODE_GENERATOR_REST_PATH = "/secure/qr-code";
 
     private final QrCodeService service;
 
@@ -31,12 +29,12 @@ public class QrCodeApi {
         this.service = service;
     }
 
-    @GetMapping
+    @GetMapping(path = "/qr-code")
 	public String hello() {
-		return "QR microservice works! :)  - path: '" + QR_CODE_GENERATOR_REST_PATH + "'";
+		return "QR microservice works! :)  - path: '/qr-code'";
 	}
 
-    @PostMapping(consumes = APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/secure/qr-code", consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<InputStreamResource> generate(@RequestBody QrCodeApiDto dto) throws IOException, URISyntaxException, InterruptedException, ExecutionException {
         log.info("Endpoint: /secure/qr-code. Text: " + dto.text());
 
