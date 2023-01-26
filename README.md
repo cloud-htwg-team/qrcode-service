@@ -12,13 +12,20 @@
 ```
 // returns dummy string just to verify its working
 GET http://localhost:8080/
+```
 
-
-// returns generated qr code, you can change the text in request's payload
+- Generate QR code, with inside history service call
+```
+Request
 POST http://localhost:8080/qr-code
 Content-Type: application/json
 
 {
-  "text": "htwg-konstanz.de"
+	"text": "HTWG",
+	"localId": "<user-id-from-auth-service>",
+	"tenantId": "<tenant-id-from-auth-service>"
 }
+
+Response
+- generated png file
 ```

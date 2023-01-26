@@ -53,8 +53,7 @@ public class QrCodeService {
         return os;
     }
 
-    public void sendToHistoryServiceAsync(byte[] qrCodeBytes, String tenantId, String userId, String idToken) throws URISyntaxException, IOException, InterruptedException {
-        //  /secure/history/tenants/{tenantId}/users/{userId}/entries
+    public void sendToHistoryServiceAsync(byte[] qrCodeBytes, String tenantId, String userId) throws URISyntaxException, IOException, InterruptedException {
         //  /secure/history/tenants/{tenantId}/users/{userId}/entries
         URI historyServiceURI = new URI("http://%s:%s/secure/history/tenants/%s/users/%s/entries".formatted(
                 historyServiceServer,
@@ -69,8 +68,7 @@ public class QrCodeService {
 
         HistoryDataDto historyDto = new HistoryDataDto(
                 Instant.now().getEpochSecond(),
-                base64QrCode,
-                idToken
+                base64QrCode
         );
 
         String json = OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(historyDto);
@@ -90,8 +88,7 @@ public class QrCodeService {
 
     private record HistoryDataDto(
             long createdAt, // epoch seconds
-            String qrCode, // base64,
-            String idToken
+            String qrCode // base64,
     ) {
     }
 

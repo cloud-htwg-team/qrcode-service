@@ -38,8 +38,11 @@ public class QrCodeApi {
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<InputStreamResource> generate(@RequestBody QrCodeApiDto dto) throws IOException, URISyntaxException, InterruptedException, ExecutionException {
+        log.info("Endpoint: /secure/qr-code. Text: " + dto.text());
+
         String textToEncode = dto.text;
         if (textToEncode == null || textToEncode.isBlank()) {
+            log.info("Bad data received: {}", dto.text);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
 
@@ -49,7 +52,7 @@ public class QrCodeApi {
         byte[] qrCodeBytes = os.toByteArray();
 
         // Send Data to History Microservice
-        service.sendToHistoryServiceAsync(qrCodeBytes, dto.tenantId, dto.localId, dto.idToken);
+        service.sendToHistoryServiceAsync(qrCodeBytes, dto.tenantId, dto.localId);
 
         String name = "qr-code.png";
         String fileName = "filename=\"" + name + "\"";
@@ -67,8 +70,7 @@ public class QrCodeApi {
     private record QrCodeApiDto(
             String text,
             String localId,
-            String tenantId,
-            String idToken
+            String tenantId
     ) {
     }
 }
