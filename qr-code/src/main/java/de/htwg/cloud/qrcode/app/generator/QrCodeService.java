@@ -90,13 +90,13 @@ public class QrCodeService {
 
     private String getTenantLogo(String tenantId) throws URISyntaxException, IOException, InterruptedException {
         //  /secure/tenants/{tenantId}/logo
-        URI tenantServiceURI = new URI("http://%s:%s//secure/tenants/%s/logo".formatted(
+        URI tenantServiceURI = new URI("http://%s:%s/secure/tenants/%s/logo".formatted(
                 tenantServiceServer,
                 tenantServicePort,
                 tenantId
         ));
 
-//        log.info(tenantServiceURI.toString());
+        log.info(tenantServiceURI.toString());
 
         HttpRequest tenantServiceGETRequest = HttpRequest.newBuilder()
                 .uri(tenantServiceURI)
