@@ -27,5 +27,6 @@ Content-Type: application/json
 }
 
 Response
-- generated png file
+Content-Type	text/plain;charset=UTF-8
+<Base-64-coded-qr-image>
 ```

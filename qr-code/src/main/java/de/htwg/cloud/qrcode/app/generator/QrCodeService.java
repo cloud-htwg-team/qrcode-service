@@ -42,7 +42,7 @@ public class QrCodeService {
     }
 
 
-    public ByteArrayOutputStream generate(String textToEncode) throws IOException {
+    public String generate(String textToEncode) throws IOException {
         QrCode qrCode = QrCode.encodeText(textToEncode, QrCode.Ecc.HIGH);
 
         BufferedImage img = QrCodeLibraryUtil.toImage(qrCode, 10, 15);
@@ -50,10 +50,13 @@ public class QrCodeService {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         ImageIO.write(img, "png", os);
 
-        return os;
+        byte[] qrCodeBytes = os.toByteArray();
+
+        return Base64.getEncoder().encodeToString(qrCodeBytes);
+
     }
 
-    public void sendToHistoryServiceAsync(byte[] qrCodeBytes, String tenantId, String userId) throws URISyntaxException, IOException, InterruptedException {
+    public void sendToHistoryServiceAsync(String base64QrCode, String tenantId, String userId) throws URISyntaxException, IOException, InterruptedException {
         //  /secure/history/tenants/{tenantId}/users/{userId}/entries
         URI historyServiceURI = new URI("http://%s:%s/secure/history/tenants/%s/users/%s/entries".formatted(
                 historyServiceServer,
@@ -63,8 +66,6 @@ public class QrCodeService {
         ));
 
         log.info(historyServiceURI.toString());
-
-        String base64QrCode = Base64.getEncoder().encodeToString(qrCodeBytes);
 
         HistoryDataDto historyDto = new HistoryDataDto(
                 Instant.now().getEpochSecond(),

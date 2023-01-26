@@ -1,19 +1,12 @@
 package de.htwg.cloud.qrcode.app.generator;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutionException;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -30,12 +23,12 @@ public class QrCodeApi {
     }
 
     @GetMapping(path = "/qr-code")
-	public String hello() {
-		return "QR microservice works! :)  - path: '/qr-code'";
-	}
+    public String hello() {
+        return "QR microservice works! :)  - path: '/qr-code'";
+    }
 
     @PostMapping(path = "/secure/qr-code", consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity<InputStreamResource> generate(@RequestBody QrCodeApiDto dto) throws IOException, URISyntaxException, InterruptedException, ExecutionException {
+    public ResponseEntity<String> generate(@RequestBody QrCodeApiDto dto) throws IOException, URISyntaxException, InterruptedException, ExecutionException {
         log.info("Endpoint: /secure/qr-code. Text: " + dto.text());
 
         String textToEncode = dto.text;
@@ -44,24 +37,14 @@ public class QrCodeApi {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
 
-        ByteArrayOutputStream os = service.generate(textToEncode);
-        int outputSize = os.size();
-
-        byte[] qrCodeBytes = os.toByteArray();
+        var base64QrCode = service.generate(textToEncode);
 
         // Send Data to History Microservice
-        service.sendToHistoryServiceAsync(qrCodeBytes, dto.tenantId, dto.localId);
-
-        String name = "qr-code.png";
-        String fileName = "filename=\"" + name + "\"";
-        String fileNameAsterisk = "filename*=UTF-8''" + URLEncoder.encode(name, StandardCharsets.UTF_8);
+        service.sendToHistoryServiceAsync(base64QrCode, dto.tenantId, dto.localId);
 
         return ResponseEntity
                 .ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; " + fileName + "; " + fileNameAsterisk)
-                .header(HttpHeaders.CONTENT_LENGTH, String.valueOf(outputSize))
-                .contentType(MediaType.IMAGE_PNG)
-                .body(new InputStreamResource(new ByteArrayInputStream(qrCodeBytes)));
+                .body(base64QrCode);
     }
 
 
