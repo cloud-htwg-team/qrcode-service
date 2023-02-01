@@ -61,7 +61,8 @@ public class QrCodeService {
         String tenantLogoBase64 = getTenantLogo(tenantId);
 
         if (tenantLogoBase64 == null || tenantLogoBase64.isBlank()) {
-            log.info("Producing pure qr code without logo...");
+
+            log.info("No logo received. Producing pure qr code without logo...");
             ImageIO.write(img, "png", os);
         } else {
             log.info("Attempting to add logo to generated qr code ...");
@@ -105,6 +106,7 @@ public class QrCodeService {
                 .GET()
                 .build();
 
+        log.info("Requesting logo from tenant service...");
         HttpResponse<String> response = HTTP_CLIENT.send(tenantServiceGETRequest, HttpResponse.BodyHandlers.ofString());
         if (response.statusCode() != 200) {
             log.info("Tenant service response status: {}", response.statusCode());
