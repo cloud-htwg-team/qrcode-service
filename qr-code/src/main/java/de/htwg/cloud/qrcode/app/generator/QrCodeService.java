@@ -93,7 +93,7 @@ public class QrCodeService {
 
     private String getTenantLogoBypassed(String tenantId) throws IOException {
         // if regular then there is no logo
-        if (tenantId.equalsIgnoreCase("regular-92it7 ")) return null;
+        if (tenantId.contains("regular-92it7")) return null;
 
         ClassPathResource classPathResource = new ClassPathResource("demo/logo-240.png");
         try (var bis = classPathResource.getInputStream()) {
