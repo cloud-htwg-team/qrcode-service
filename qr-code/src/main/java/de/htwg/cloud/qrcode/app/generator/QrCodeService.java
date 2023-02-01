@@ -101,7 +101,7 @@ public class QrCodeService {
         HttpRequest tenantServiceGETRequest = HttpRequest.newBuilder()
                 .uri(tenantServiceURI)
                 .header(ACCEPT, APPLICATION_JSON_VALUE)
-                .timeout(Duration.ofSeconds(30))
+                .timeout(Duration.ofSeconds(180))
                 .GET()
                 .build();
 
@@ -136,7 +136,7 @@ public class QrCodeService {
         HttpRequest historyServicePOSTRequest = HttpRequest.newBuilder()
                 .uri(historyServiceURI)
                 .header(CONTENT_TYPE, APPLICATION_JSON_VALUE)
-                .timeout(Duration.ofSeconds(30))
+                .timeout(Duration.ofSeconds(180))
                 .POST(HttpRequest.BodyPublishers.ofString(json))
                 .build();
 
