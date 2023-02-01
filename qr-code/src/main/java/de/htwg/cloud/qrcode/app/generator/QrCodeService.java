@@ -58,9 +58,11 @@ public class QrCodeService {
         BufferedImage img = QrCodeLibraryUtil.toImage(qrCode, 10, 10); // border = whitespace around of qrcode
         ByteArrayOutputStream os = new ByteArrayOutputStream();
 
-        // FIXME: Bypassing tenant service with hardcoded image
-//        String tenantLogoBase64 = getTenantLogo(tenantId);
-        String tenantLogoBase64 = getTenantLogoBypassed(tenantId);
+        String tenantLogoBase64 = getTenantLogo(tenantId);
+        if (tenantLogoBase64 == null) {
+            // FIXME: Bypassing tenant service with hardcoded image if tenant service doesnt respond
+            tenantLogoBase64 = getTenantLogoBypassed(tenantId);
+        }
 
         if (tenantLogoBase64 == null || tenantLogoBase64.isBlank()) {
 
