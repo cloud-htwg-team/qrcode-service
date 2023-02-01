@@ -58,7 +58,9 @@ public class QrCodeService {
         BufferedImage img = QrCodeLibraryUtil.toImage(qrCode, 10, 10); // border = whitespace around of qrcode
         ByteArrayOutputStream os = new ByteArrayOutputStream();
 
-        String tenantLogoBase64 = getTenantLogo(tenantId);
+        // FIXME: Bypassing tenant service with hardcoded image
+//        String tenantLogoBase64 = getTenantLogo(tenantId);
+        String tenantLogoBase64 = getTenantLogoBypassed(tenantId);
 
         if (tenantLogoBase64 == null || tenantLogoBase64.isBlank()) {
 
@@ -87,6 +89,17 @@ public class QrCodeService {
         byte[] qrCodeBytes = os.toByteArray();
 
         return Base64.getEncoder().encodeToString(qrCodeBytes);
+    }
+
+    private String getTenantLogoBypassed(String tenantId) throws IOException {
+        // if regular then there is no logo
+        if (tenantId.equalsIgnoreCase("regular-92it7 ")) return null;
+
+        ClassPathResource classPathResource = new ClassPathResource("demo/logo-240.png");
+        try (var bis = classPathResource.getInputStream()) {
+            byte[] bytes = bis.readAllBytes();
+            return Base64.getEncoder().encodeToString(bytes);
+        }
     }
 
     private String getTenantLogo(String tenantId) throws URISyntaxException, IOException, InterruptedException {
