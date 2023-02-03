@@ -60,8 +60,8 @@ public class QrCodeService {
 
         String tenantLogoBase64 = getTenantLogo(tenantId);
         if (tenantLogoBase64 == null) {
-            // FIXME: Bypassing tenant service with hardcoded image if tenant service doesnt respond
             tenantLogoBase64 = getTenantLogoBypassed(tenantId);
+            // FIXME: Bypassing tenant service with hardcoded image if tenant service doesnt respond
         }
 
         if (tenantLogoBase64 == null || tenantLogoBase64.isBlank()) {
@@ -117,7 +117,7 @@ public class QrCodeService {
         HttpRequest tenantServiceGETRequest = HttpRequest.newBuilder()
                 .uri(tenantServiceURI)
                 .header(ACCEPT, APPLICATION_JSON_VALUE)
-                .timeout(Duration.ofSeconds(180))
+                .timeout(Duration.ofSeconds(60))
                 .GET()
                 .build();
 
