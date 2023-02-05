@@ -1,14 +1,9 @@
-## QR Code microservise 
-- `JAVA 17`
-- library
+# QR Code microservise 
+- `JAVA 17 + SpringBoot 3`
+- QR Code library
   - https://github.com/nayuki/QR-Code-generator
-- build Docker image
-  - `docker build  -t qrcode_generator .`
-- run Docker image
-  - `docker run -d -p 8080:8080 qrcode_generator`
-  - `-d` is for `detached mode`
   
-### Usage
+## Usage
 ```
 // returns dummy string just to verify its working
 GET http://localhost:8080/
